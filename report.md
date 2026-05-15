@@ -4,7 +4,7 @@
 
 **Course:** Advanced Python (ICS0019)
 
-**Team members:** [Name 1], [Name 2]
+**Team members:** [Name 1], [Name 2] Ellen Marie Lasson, Daniel Novák
 
 **Date:** [DD.MM.YYYY] 15.5.2026
 
@@ -45,20 +45,20 @@ Always document experiments you ran. Fill in the summary table will all the expe
 
 ### Total number of experiments:
 
-### Experiment 1: [Name / description]
+### Experiment 1: [Name / description] Baseline
 
-- **Algorithm:** [e.g., Random Forest with default parameters]
-- **What changed from baseline:** [e.g., "Nothing — this is our own baseline run"]
-- **Macro F1 (CV):** [cross-validation score]
-- **Macro F1 (test):** [KDDTest+ score]
-- **Observation:** [what did you learn from this experiment?]
+- **Algorithm:** [e.g., Random Forest with default parameters] Random forest with default parameters
+- **What changed from baseline:** [e.g., "Nothing — this is our own baseline run"] This was our own baseline
+- **Macro F1 (CV):** [cross-validation score] 0.9243 (± 0.0170)
+- **Macro F1 (test):** [KDDTest+ score] 0.5088
+- **Observation:** [what did you learn from this experiment?] The gap between cross-validation and KDDTest+ score is quite large. This was expected because of the class imbalances. The KDDTest+ is rather low without tackling the imbalances.
 
 ### Experiment 2: [Name / description]
 
 - **Algorithm:**
 - **What changed:** [e.g., "Added SMOTE before training"]
-- **Macro F1 (CV):**
-- **Macro F1 (test):**
+- **Macro F1 (CV):** 
+- **Macro F1 (test):** 
 - **Observation:**
 
 ### Experiment 3: [Name / description]
@@ -139,7 +139,7 @@ Always document experiments you ran. Fill in the summary table will all the expe
 
 ## Appendix: Environment
 
-- **Hardware:** [CPU, RAM, GPU if used]
-- **Python version:** [e.g., 3.11]
+- **Hardware:** [CPU, RAM, GPU if used] MacBook M1 Pro, 
+- **Python version:** [e.g., 3.11] 3.12
 - **Key libraries:** [scikit-learn version, xgboost version, etc.]
-- **Random seed:** [e.g., 42]
+- **Random seed:** [e.g., 42] 42

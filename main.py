@@ -1,8 +1,10 @@
 import pandas as pd
+from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt  # installed automatically with seaborn
 import seaborn as sns
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix, f1_score
+from sklearn.ensemble import RandomForestClassifier
 
 # ==============================================================
 # 1. LOAD DATA
@@ -101,6 +103,8 @@ print(y_train.value_counts())
 print(f"\nTest set class distribution:")
 print(y_test.value_counts())
 
+
+
 # ==============================================================
 # YOUR WORK STARTS HERE
 # ==============================================================
@@ -119,6 +123,20 @@ print(y_test.value_counts())
 #
 # To compute macro F1:
 #   f1_score(y_test, y_pred, average='macro')
+
+
+#Random Forest 1. experiment
+rf = RandomForestClassifier()
+
+#Random Forest 2. experiment // added hyperparameters
+# rf = RandomForestClassifier(n_estimators=100, random_state=42, max_depth=14, class_weight='balanced', min_samples_split=10)
+
+scores = cross_val_score(rf, X_train, y_train, cv=5, scoring='f1_macro')
+print(f"Macro F1(CV): {scores.mean():.4f} (± {scores.std():.4f})")
+
+rf.fit(X_train, y_train)
+y_pred = rf.predict(X_test)
+print(f"Macro F1(test): {f1_score(y_test, y_pred, average='macro'):.4f}")
 
 #Visualization
 # labels = ["DoS", "Normal", "Probe", "R2L", "U2R"]
