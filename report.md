@@ -49,25 +49,41 @@ Always document experiments you ran. Fill in the summary table will all the expe
 
 - **Algorithm:** [e.g., Random Forest with default parameters] Random forest with default parameters
 - **What changed from baseline:** [e.g., "Nothing — this is our own baseline run"] This was our own baseline
-- **Macro F1 (CV):** [cross-validation score] 0.9243 (± 0.0170)
-- **Macro F1 (test):** [KDDTest+ score] 0.5088
+- **Macro F1 (CV):** [cross-validation score] 0.9188 (± 0.0232)
+- **Macro F1 (test):** [KDDTest+ score] 0.5009
 - **Observation:** [what did you learn from this experiment?] The gap between cross-validation and KDDTest+ score is quite large. This was expected because of the class imbalances. The KDDTest+ is rather low without tackling the imbalances.
 
-### Experiment 2: [Name / description]
+### Experiment 2: [Name / description] Adding parameters
 
-- **Algorithm:**
-- **What changed:** [e.g., "Added SMOTE before training"]
-- **Macro F1 (CV):** 
-- **Macro F1 (test):** 
-- **Observation:**
+- **Algorithm:** Random Forest with added parameters
+- **What changed:** [e.g., "Added SMOTE before training"] Added class_weight='balanced', n_estimators=100, max_depth=14 and min_samples_split=10
+- **Macro F1 (CV):** 0.9399 (± 0.0145)
+- **Macro F1 (test):** 0.5064
+- **Observation:** The scores improved only marginally, not a big difference compared to the baseline.
 
-### Experiment 3: [Name / description]
+### Experiment 3: [Name / description] Added SMOTE
 
-- **Algorithm:**
-- **What changed:**
-- **Macro F1 (CV):**
-- **Macro F1 (test):**
-- **Observation:**
+- **Algorithm:** Random Forest with SMOTE
+- **What changed:** Added SMOTE before training
+- **Macro F1 (CV):** 0.9992 (± 0.0001)
+- **Macro F1 (test):** 0.5794
+- **Observation:** With SMOTE the accuracy increased by a decent amount. The gap between CV and test F1 scores was still too large, however.
+
+### Experiment 4: [Name / description] XGBoost + SMOTE
+
+- **Algorithm:** XGBoost with SMOTE before training
+- **What changed:** We changed from Random Forest to XGBoost
+- **Macro F1 (CV):** 0.9998 (± 0.0001)
+- **Macro F1 (test):** 0.6091
+- **Observation:** Once again the KDDTest+ score increased. The gap grew smaller this time as the cross-validation score didn't change much (it's already really high).
+
+### Experiment 5: [Name / description] XGBoost + SMOTE hyperparameter tuning
+
+- **Algorithm:** XGBoost + SMOTE with some tuning
+- **What changed:** Added n_estimators=200, max_depth=9, learning_rate=0.1
+- **Macro F1 (CV):** 0.9997 (± 0.0001)
+- **Macro F1 (test):** 0.6331
+- **Observation:** Tuning improved the KDDTest+ score further.
 
 ### Experiments Summary
 

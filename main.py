@@ -1,10 +1,12 @@
 import pandas as pd
+from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt  # installed automatically with seaborn
 import seaborn as sns
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
 
 # ==============================================================
 # 1. LOAD DATA
@@ -125,20 +127,78 @@ print(y_test.value_counts())
 #   f1_score(y_test, y_pred, average='macro')
 
 
-#Random Forest 1. experiment
-rf = RandomForestClassifier()
+#Random Forest 1. experiment ---------------
+# rf = RandomForestClassifier(random_state=42)
+#
+# scores = cross_val_score(rf, X_train, y_train, cv=5, scoring='f1_macro')
+# print(f"Macro F1(CV): {scores.mean():.4f} (± {scores.std():.4f})")
+#
+# rf.fit(X_train, y_train)
+# y_pred = rf.predict(X_test)
+# print(f"Macro F1(test): {f1_score(y_test, y_pred, average='macro'):.4f}")
 
-#Random Forest 2. experiment // added hyperparameters
-# rf = RandomForestClassifier(n_estimators=100, random_state=42, max_depth=14, class_weight='balanced', min_samples_split=10)
+# Random Forest 2. experiment // added hyperparameters -------------
+# rf = RandomForestClassifier(n_estimators=100, random_state=42, max_depth=14, class_weight="balanced", min_samples_split=10)
+#
+# scores = cross_val_score(rf, X_train, y_train, cv=5, scoring='f1_macro')
+# print(f"Macro F1(CV): {scores.mean():.4f} (± {scores.std():.4f})")
+#
+# rf.fit(X_train, y_train)
+# y_pred = rf.predict(X_test)
+# print(f"Macro F1(test): {f1_score(y_test, y_pred, average='macro'):.4f}")
 
-scores = cross_val_score(rf, X_train, y_train, cv=5, scoring='f1_macro')
+#Random Forest 3. experiment // added SMOTE before training ---------
+# smote = SMOTE(random_state=42)
+# X_train_sm, y_train_sm = smote.fit_resample(X_train, y_train)
+#
+# rf_smote = RandomForestClassifier(n_estimators=100, random_state=42, max_depth=14, min_samples_split=10)
+#
+# scores = cross_val_score(rf_smote, X_train_sm, y_train_sm, cv=5, scoring='f1_macro')
+# print(f"Macro F1(CV): {scores.mean():.4f} (± {scores.std():.4f})")
+#
+# rf_smote.fit(X_train_sm, y_train_sm)
+# y_pred = rf_smote.predict(X_test)
+# print(f"Macro F1(test): {f1_score(y_test, y_pred, average='macro'):.4f}")
+
+#XGBoost + SMOTE 4. experiment // ------------
+# smote = SMOTE(random_state=42)
+# X_train_sm, y_train_sm = smote.fit_resample(X_train, y_train)
+#
+# le = LabelEncoder()
+# y_train_sm = le.fit_transform(y_train_sm)
+# # y_train has to be encoded for XGBoost from an update
+#
+# xgb = XGBClassifier(random_state=42, n_estimators=100)
+#
+# scores = cross_val_score(xgb, X_train_sm, y_train_sm, cv=5, scoring='f1_macro')
+# print(f"Macro F1(CV): {scores.mean():.4f} (± {scores.std():.4f})")
+#
+# xgb.fit(X_train_sm, y_train_sm)
+# y_pred_encoded = xgb.predict(X_test)
+# y_pred = le.inverse_transform(y_pred_encoded)
+# # We have to decode it back to numeric
+# print(f"Macro F1(test): {f1_score(y_test, y_pred, average='macro'):.4f}")
+
+#XGBoost + SMOTE 5. experiment // tuned the parameters ------------
+smote = SMOTE(random_state=42)
+X_train_sm, y_train_sm = smote.fit_resample(X_train, y_train)
+
+le = LabelEncoder()
+y_train_sm = le.fit_transform(y_train_sm)
+# y_train has to be encoded for XGBoost from an update
+
+xgb = XGBClassifier(random_state=42, n_estimators=200, max_depth=9, learning_rate=0.1)
+
+scores = cross_val_score(xgb, X_train_sm, y_train_sm, cv=5, scoring='f1_macro')
 print(f"Macro F1(CV): {scores.mean():.4f} (± {scores.std():.4f})")
 
-rf.fit(X_train, y_train)
-y_pred = rf.predict(X_test)
+xgb.fit(X_train_sm, y_train_sm)
+y_pred_encoded = xgb.predict(X_test)
+y_pred = le.inverse_transform(y_pred_encoded)
+# We have to decode it back to numeric
 print(f"Macro F1(test): {f1_score(y_test, y_pred, average='macro'):.4f}")
 
-#Visualization
+#Visualization ------
 # labels = ["DoS", "Normal", "Probe", "R2L", "U2R"]
 # cm = confusion_matrix(y_test, y_pred, labels=labels)
 #
