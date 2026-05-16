@@ -211,3 +211,32 @@ print(f"Macro F1(test): {f1_score(y_test, y_pred, average='macro'):.4f}")
 # plt.tight_layout()
 # plt.savefig("confusion_matrix.png", dpi=150)
 # plt.show()
+
+
+# EXPERIMENT 6 — RF + SMOTE + class_weight balanced (by Ell)
+
+print("\n--- Experiment 6: RF + SMOTE + balanced (Ell) ---")
+
+smote_ell = SMOTE(random_state=42)
+X_train_ell, y_train_ell = smote_ell.fit_resample(X_train, y_train)
+
+rf_ell = RandomForestClassifier(random_state=42, class_weight='balanced')
+rf_ell.fit(X_train_ell, y_train_ell)
+
+y_pred_ell = rf_ell.predict(X_test)
+
+print(f"Macro F1 (RF + SMOTE + balanced): {f1_score(y_test, y_pred_ell, average='macro'):.4f}")
+print(classification_report(y_test, y_pred_ell))
+
+labels = ["DoS", "Normal", "Probe", "R2L", "U2R"]
+cm_ell = confusion_matrix(y_test, y_pred_ell, labels=labels)
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm_ell, annot=True, fmt="d", cmap="Blues",
+            xticklabels=labels, yticklabels=labels)
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion Matrix - RF + SMOTE (Ell)")
+plt.tight_layout()
+plt.savefig("confusion_matrix_ell.png", dpi=150)
+plt.show()
