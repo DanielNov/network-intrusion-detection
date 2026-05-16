@@ -33,7 +33,7 @@ Describe any changes you made to the data beyond the starter code:
 
 How did you address the imbalance between classes?
 
-- **Method used:** [SMOTE / class_weight / undersampling / combination / none]
+- **Method used:** [SMOTE / class_weight / undersampling / combination / none] we tried class_weight and then switched to SMOTE
 - **Parameters:** [e.g., SMOTE with k_neighbors=5, or class_weight='balanced']
 - **Effect on training set distribution:** [how did the class distribution change?]
 
@@ -87,13 +87,13 @@ Always document experiments you ran. Fill in the summary table will all the expe
 
 ### Experiments Summary
 
-| # | Description | Algorithm | Imbalance Handling | Macro F1 (CV) | Macro F1 (test) |
-| --- | --- | --- | --- | --- | --- |
-| 1 |  |  |  |  |  |
-| 2 |  |  |  |  |  |
-| 3 |  |  |  |  |  |
-| 4 |  |  |  |  |  |
-| 5 |  |  |  |  |  |
+| # | Description                                               | Algorithm                        | Imbalance Handling      | Macro F1 (CV) | Macro F1 (test) |
+| --- |-----------------------------------------------------------|----------------------------------|-------------------------| --- | --- |
+| 1 | Baseline                                                  | Random Forest default parameters | None                    | 0.9188 |0.5009  |
+| 2 | Tuned baseline                                            | Rancom Forest with parameters    | class_weight='balanced' | 0.9399 | 0.5064 |
+| 3 | Added SMOTE to baseline                                   | Random Forest + SMOTE            | SMOTE                   |0.9992  | 0.5794 |
+| 4 | Changing Random Forest to XGBoost with default parameters | XGBoost + SMOTE                  | SMOTE                   |0.9998  | 0.6091 |
+| 5 | Tuning XBoost with SMOTE                                  | XBBoost with tuning + SMOTe      | SMOTE                   | 0.9997 | 0.6331 |
 
 ---
 
